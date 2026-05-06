@@ -1,6 +1,9 @@
 import { NextResponse } from "next/server";
 import { sendQuoteEmails } from "@/lib/email/placeholder";
-import { quoteFormSchema, validateQuoteAttachment } from "@/lib/validations/quote";
+import {
+  quoteFormSchema,
+  validateQuoteAttachment,
+} from "@/lib/validations/quote";
 
 export const runtime = "nodejs";
 
@@ -46,16 +49,27 @@ export async function POST(req: Request) {
 
     const fileErr = validateQuoteAttachment(file);
     if (fileErr) {
-      return NextResponse.json({ ok: false, message: fileErr }, { status: 422 });
+      return NextResponse.json(
+        { ok: false, message: fileErr },
+        { status: 422 },
+      );
     }
 
     const attachmentMeta = file
       ? { name: file.name, size: file.size, type: file.type }
       : null;
+    const attachment = file
+      ? {
+          name: file.name,
+          type: file.type,
+          content: Buffer.from(await file.arrayBuffer()),
+        }
+      : null;
 
     await sendQuoteEmails({
       ...parsed.data,
       attachmentMeta,
+      attachment,
     });
 
     return NextResponse.json({ ok: true });

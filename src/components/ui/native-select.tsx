@@ -8,7 +8,9 @@ const NativeSelect = React.forwardRef<HTMLSelectElement, NativeSelectProps>(
     <select
       ref={ref}
       className={cn(
-        "flex h-11 w-full appearance-none rounded-xl border border-white/15 bg-white/5 bg-size-[1rem_1rem] bg-position-[right_0.75rem_center] bg-no-repeat px-4 py-2 pr-10 text-sm text-[#FAFAF8] shadow-inner backdrop-blur-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C8882A]/40 disabled:opacity-50",
+        // [&>option]:… — native option lists often use a light system background while
+        // inheriting the select's light text; force readable contrast on options.
+        "flex h-11 w-full appearance-none rounded-xl border border-white/15 bg-white/5 bg-size-[1rem_1rem] bg-position-[right_0.75rem_center] bg-no-repeat px-4 py-2 pr-10 text-sm text-[#FAFAF8] shadow-inner backdrop-blur-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C8882A]/40 disabled:opacity-50 [&>option]:bg-white [&>option]:text-neutral-900",
         className,
       )}
       style={{
