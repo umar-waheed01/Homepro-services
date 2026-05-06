@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
+import type { MouseEvent } from "react";
 import { Menu, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
@@ -23,6 +24,23 @@ function sectionHref(pathname: string, hash: string) {
 export function SiteHeader() {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
+
+  function handleMobileNavClick(e: MouseEvent<HTMLAnchorElement>, hash: string) {
+    e.preventDefault();
+    setOpen(false);
+
+    // On non-home routes keep existing behavior and navigate to homepage hash.
+    if (pathname !== "/") {
+      window.location.href = `/${hash}`;
+      return;
+    }
+
+    const id = hash.replace("#", "");
+    // Wait for the menu close animation frame, then perform smooth scroll.
+    requestAnimationFrame(() => {
+      document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "start" });
+    });
+  }
 
   return (
     <header className="fixed inset-x-0 top-0 z-50 border-b border-white/10 bg-[#0D3D24]/75 backdrop-blur-xl">
@@ -75,13 +93,16 @@ export function SiteHeader() {
                   className={cn(
                     "rounded-lg px-3 py-2 text-sm font-medium text-white/90 hover:bg-white/10",
                   )}
-                  onClick={() => setOpen(false)}
+                  onClick={(e) => handleMobileNavClick(e, item.href)}
                 >
                   {item.label}
                 </a>
               ))}
               <Button asChild className="mt-2 w-full font-bold">
-                <a href={sectionHref(pathname, "#quote")} onClick={() => setOpen(false)}>
+                <a
+                  href={sectionHref(pathname, "#quote")}
+                  onClick={(e) => handleMobileNavClick(e, "#quote")}
+                >
                   Get a free quote
                 </a>
               </Button>
