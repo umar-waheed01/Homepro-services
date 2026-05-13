@@ -35,7 +35,7 @@ export const howItWorksSteps = [
 export const aboutTrustBadges = [
   "Fully Certified & Insured",
   "Government ECO Scheme Approved",
-  "MCS Certified Solar Installer",
+  "At-Home Car Wash & Valeting",
   "Free No-Obligation Quotes",
   "150+ Happy Customers",
   "East London Based",
@@ -63,7 +63,7 @@ export const testimonials = [
   {
     name: "David R.",
     area: "Walthamstow",
-    text: "Solar install from quote to commissioning was smooth. MCS paperwork handled for us.",
+    text: "Booked a driveway car wash — spotless finish, friendly team, and great value.",
     rating: 5,
   },
   {

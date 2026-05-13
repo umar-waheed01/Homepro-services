@@ -5,7 +5,7 @@ const schema = {
   "@type": "HomeAndConstructionBusiness",
   name: "HomePro Services",
   description:
-    "Gardening, electrical, plumbing, EPC surveys and solar installation across East London. Free quotes and ECO scheme support.",
+    "Gardening, electrical, plumbing, EPC surveys and at-home car wash across East London. Free quotes and ECO scheme support.",
   url: "https://homeproservices.co.uk",
   telephone: siteConfig.phone,
   email: siteConfig.email,

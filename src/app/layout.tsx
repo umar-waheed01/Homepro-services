@@ -19,14 +19,14 @@ export const metadata: Metadata = {
   metadataBase: new URL("https://homeproservices.co.uk"),
   title: {
     default:
-      "HomePro Services | Gardening, Electrical, Plumbing, EPC & Solar — East London",
+      "HomePro Services | Gardening, Electrical, Plumbing, EPC & Car Wash — East London",
     template: "%s | HomePro Services",
   },
   description:
-    "HomePro Services offers expert gardening, electrical, plumbing, EPC surveys and solar installation across East London. Free quotes and ECO scheme support available.",
+    "HomePro Services offers expert gardening, electrical, plumbing, EPC surveys and at-home car wash across East London. Free quotes and ECO scheme support available.",
   openGraph: {
     title:
-      "HomePro Services | Gardening, Electrical, Plumbing, EPC & Solar — East London",
+      "HomePro Services | Gardening, Electrical, Plumbing, EPC & Car Wash — East London",
     description:
       "Expert home services across East London — free quotes, certified tradespeople, ECO scheme support.",
     locale: "en_GB",
@@ -37,7 +37,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "HomePro Services — East London",
     description:
-      "Gardening, electrical, plumbing, EPC surveys & solar. Free quotes.",
+      "Gardening, electrical, plumbing, EPC surveys & car wash. Free quotes.",
   },
   robots: { index: true, follow: true },
 };

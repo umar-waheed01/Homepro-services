@@ -43,7 +43,7 @@ export function HeroSection() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.55, delay: 0.1 }}
           >
-            Expert Gardening, Electrical, Plumbing, EPC Surveys & Solar Installation — Free
+            Expert Gardening, Electrical, Plumbing, EPC Surveys & At-Home Car Wash — Free
             Quotes, Government ECO Scheme Available.
           </motion.p>
           <motion.div

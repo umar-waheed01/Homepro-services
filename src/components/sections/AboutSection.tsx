@@ -1,10 +1,10 @@
 "use client";
 
-import { Award, BadgeCheck, Leaf, MapPin, Sun, Zap } from "lucide-react";
+import { Award, BadgeCheck, Car, Leaf, MapPin, Zap } from "lucide-react";
 import { aboutTrustBadges } from "@/lib/constants/site";
 import { MotionSection } from "@/components/animations/MotionSection";
 
-const badgeIcons = [BadgeCheck, Award, Sun, Zap, Leaf, MapPin] as const;
+const badgeIcons = [BadgeCheck, Award, Car, Zap, Leaf, MapPin] as const;
 
 export function AboutSection() {
   return (
@@ -21,7 +21,7 @@ export function AboutSection() {
             <p className="mt-6 text-base leading-relaxed text-white/85">
               HomePro Services was founded with one simple goal: to give London homeowners access to
               reliable, fairly-priced tradespeople they can actually trust. We cover everything
-              from garden maintenance to solar panel installation — and we handle every job with
+              from garden maintenance to at-home car wash and valeting — and we handle every job with
               the same care and professionalism. All our engineers are certified, insured, and
               experienced. We are proud to support homeowners through energy-saving services and ECO
               scheme opportunities.

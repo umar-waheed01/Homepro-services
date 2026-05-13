@@ -5,7 +5,7 @@ const serviceEnum = z.enum([
   "Electrical",
   "Plumbing",
   "EPC Survey",
-  "Solar Installation",
+  "Car Wash",
   "Other",
 ]);
 

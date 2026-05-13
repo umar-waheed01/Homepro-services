@@ -108,7 +108,7 @@ export function ServicesSection() {
           Services built around your home
         </h2>
         <p className="mx-auto mt-4 max-w-2xl text-center text-white/75">
-          One trusted team for gardening, electrical, plumbing, EPC surveys and solar — click a
+          One trusted team for gardening, electrical, plumbing, EPC surveys and car wash — click a
           card to request your free quote with that service pre-selected.
         </p>
         <GsapReveal className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">

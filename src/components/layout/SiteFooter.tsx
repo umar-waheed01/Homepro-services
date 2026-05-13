@@ -10,7 +10,7 @@ export function SiteFooter() {
             HomePro Services
           </p>
           <p className="mt-2 max-w-sm text-sm">
-            Expert gardening, electrical, plumbing, EPC surveys & solar across East London.
+            Expert gardening, electrical, plumbing, EPC surveys & car wash across East London.
           </p>
         </div>
         <div className="flex flex-col gap-4 text-sm">

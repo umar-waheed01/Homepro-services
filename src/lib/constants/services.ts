@@ -1,8 +1,8 @@
 import {
+  Car,
   Droplets,
   FileCheck,
   Leaf,
-  Sun,
   Zap,
   type LucideIcon,
 } from "lucide-react";
@@ -12,14 +12,14 @@ export type ServiceId =
   | "electrical"
   | "plumbing"
   | "epc"
-  | "solar";
+  | "carwash";
 
 export type ServiceFormValue =
   | "Gardening"
   | "Electrical"
   | "Plumbing"
   | "EPC Survey"
-  | "Solar Installation"
+  | "Car Wash"
   | "Other";
 
 export const SERVICE_FORM_VALUES: ServiceFormValue[] = [
@@ -27,7 +27,7 @@ export const SERVICE_FORM_VALUES: ServiceFormValue[] = [
   "Electrical",
   "Plumbing",
   "EPC Survey",
-  "Solar Installation",
+  "Car Wash",
   "Other",
 ];
 
@@ -85,15 +85,14 @@ export const services: ServiceDefinition[] = [
     icon: FileCheck,
   },
   {
-    id: "solar",
-    title: "Solar Installation",
-    formValue: "Solar Installation",
+    id: "carwash",
+    title: "Car Wash",
+    formValue: "Car Wash",
     description:
-      "Solar panel supply & install, battery storage, ECO scheme eligible, MCS certified",
-    duration: "1–2 days",
-    price: "From £4,000",
-    ecoBadge: true,
-    icon: Sun,
+      "At-home car wash and valeting — exterior wash, interior vacuum, and detailing at your driveway",
+    duration: "1–3 hours",
+    price: "From £35",
+    icon: Car,
   },
 ];
 
