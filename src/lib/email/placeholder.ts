@@ -1,7 +1,6 @@
 import type { QuoteFormInput } from "@/lib/validations/quote";
 import nodemailer from "nodemailer";
 import type SMTPTransport from "nodemailer/lib/smtp-transport";
-import { Resend } from "resend";
 
 export type QuoteEmailPayload = QuoteFormInput & {
   attachmentMeta?: { name: string; size: number; type: string } | null;
@@ -9,7 +8,6 @@ export type QuoteEmailPayload = QuoteFormInput & {
 };
 
 let transporters: nodemailer.Transporter[] | null = null;
-let resendClient: Resend | null = null;
 
 function requireEnv(name: string): string {
   const value = process.env[name]?.trim();
@@ -64,13 +62,6 @@ function buildTransporters(): nodemailer.Transporter[] {
   return transporters;
 }
 
-function getResendClient(): Resend | null {
-  const key = process.env.RESEND_API_KEY?.trim();
-  if (!key) return null;
-  if (!resendClient) resendClient = new Resend(key);
-  return resendClient;
-}
-
 async function sendWithFallback(
   transportPool: nodemailer.Transporter[],
   mail: nodemailer.SendMailOptions,
@@ -86,49 +77,13 @@ async function sendWithFallback(
   throw lastError;
 }
 
-async function sendWithResend(
-  resend: Resend,
-  mail: {
-    from: string;
-    to: string;
-    subject: string;
-    html: string;
-    replyTo?: string;
-    attachment?: { name: string; type: string; content: Buffer } | null;
-  },
-): Promise<boolean> {
-  const result = await resend.emails.send({
-    from: mail.from,
-    to: [mail.to],
-    subject: mail.subject,
-    html: mail.html,
-    replyTo: mail.replyTo ? [mail.replyTo] : undefined,
-    attachments: mail.attachment
-      ? [
-          {
-            filename: mail.attachment.name,
-            content: mail.attachment.content.toString("base64"),
-            contentType: mail.attachment.type,
-          },
-        ]
-      : undefined,
-  });
-
-  if (result.error) {
-    throw new Error(result.error.message);
-  }
-
-  return Boolean(result.data?.id);
-}
-
 export async function sendQuoteEmails(payload: QuoteEmailPayload): Promise<{
   ownerSent: boolean;
   customerSent: boolean;
 }> {
   const ownerTo = requireEnv("QUOTE_NOTIFY_EMAIL");
   const from = requireEnv("EMAIL_FROM");
-  const resend = getResendClient();
-  const mailers = resend ? null : buildTransporters();
+  const mailers = buildTransporters();
 
   const ownerHtml = `
     <h2>New HomePro Quote Request</h2>
@@ -154,57 +109,32 @@ export async function sendQuoteEmails(payload: QuoteEmailPayload): Promise<{
     <p>Kind regards,<br/>HomePro Team</p>
   `;
 
-  const ownerMail = {
+  const ownerResult = await sendWithFallback(mailers, {
     from,
     to: ownerTo,
     replyTo: payload.email,
     subject: `New quote request: ${payload.serviceNeeded} (${payload.fullName})`,
     html: ownerHtml,
-    attachment: payload.attachment,
-  };
+    attachments: payload.attachment
+      ? [
+          {
+            filename: payload.attachment.name,
+            content: payload.attachment.content,
+            contentType: payload.attachment.type,
+          },
+        ]
+      : [],
+  });
 
-  const customerMail = {
+  const customerResult = await sendWithFallback(mailers, {
     from,
     to: payload.email,
     subject: "We received your HomePro quote request",
     html: customerHtml,
-  };
-
-  let ownerSent = false;
-  let customerSent = false;
-  if (resend) {
-    ownerSent = await sendWithResend(resend, ownerMail);
-    customerSent = await sendWithResend(resend, customerMail);
-  } else if (mailers) {
-    const ownerResult = await sendWithFallback(mailers, {
-      from,
-      to: ownerTo,
-      replyTo: payload.email,
-      subject: ownerMail.subject,
-      html: ownerMail.html,
-      attachments: payload.attachment
-        ? [
-            {
-              filename: payload.attachment.name,
-              content: payload.attachment.content,
-              contentType: payload.attachment.type,
-            },
-          ]
-        : [],
-    });
-
-    const customerResult = await sendWithFallback(mailers, {
-      from,
-      to: payload.email,
-      subject: customerMail.subject,
-      html: customerMail.html,
-    });
-    ownerSent = Boolean(ownerResult.messageId);
-    customerSent = Boolean(customerResult.messageId);
-  }
+  });
 
   return {
-    ownerSent,
-    customerSent,
+    ownerSent: Boolean(ownerResult.messageId),
+    customerSent: Boolean(customerResult.messageId),
   };
 }
