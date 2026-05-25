@@ -97,7 +97,9 @@ export function QuoteRequestForm() {
       } | null;
       if (!res.ok || !json?.ok) {
         setSubmitState("error");
-        setServerMessage(json?.message ?? "Something went wrong. Please try again.");
+        setServerMessage(
+          json?.message ?? "Something went wrong. Please try again.",
+        );
         return;
       }
       setSubmitState("success");
@@ -113,7 +115,7 @@ export function QuoteRequestForm() {
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className="mx-auto flex max-w-2xl flex-col gap-5"
+      className="flex w-full flex-col gap-5"
       noValidate
     >
       <div className="grid gap-2">
@@ -175,7 +177,10 @@ export function QuoteRequestForm() {
           control={control}
           render={({ field }) => (
             <Select value={field.value} onValueChange={field.onChange}>
-              <SelectTrigger id="serviceNeeded" aria-invalid={!!errors.serviceNeeded}>
+              <SelectTrigger
+                id="serviceNeeded"
+                aria-invalid={!!errors.serviceNeeded}
+              >
                 <SelectValue placeholder="Select a service" />
               </SelectTrigger>
               <SelectContent>
@@ -223,7 +228,9 @@ export function QuoteRequestForm() {
             setFileError(null);
           }}
         />
-        <p className="text-xs text-white/50">JPG, PNG, PDF, or HEIC — max 10MB</p>
+        <p className="text-xs text-white/50">
+          JPG, PNG, PDF, or HEIC — max 10MB
+        </p>
         {fileError && (
           <p className="text-sm text-red-300" role="alert">
             {fileError}
@@ -233,8 +240,13 @@ export function QuoteRequestForm() {
 
       <div className="grid gap-2 sm:grid-cols-2 sm:gap-4">
         <div className="grid gap-2">
-          <Label htmlFor="preferredContactTime">Preferred contact time (optional)</Label>
-          <NativeSelect id="preferredContactTime" {...register("preferredContactTime")}>
+          <Label htmlFor="preferredContactTime">
+            Preferred contact time (optional)
+          </Label>
+          <NativeSelect
+            id="preferredContactTime"
+            {...register("preferredContactTime")}
+          >
             <option value="">No preference</option>
             <option value="morning">Morning (8am–12pm)</option>
             <option value="afternoon">Afternoon (12pm–5pm)</option>
@@ -242,7 +254,9 @@ export function QuoteRequestForm() {
           </NativeSelect>
         </div>
         <div className="grid gap-2">
-          <Label htmlFor="howDidYouHear">How did you hear about us? (optional)</Label>
+          <Label htmlFor="howDidYouHear">
+            How did you hear about us? (optional)
+          </Label>
           <NativeSelect id="howDidYouHear" {...register("howDidYouHear")}>
             <option value="">Prefer not to say</option>
             <option value="google">Google</option>
@@ -260,12 +274,15 @@ export function QuoteRequestForm() {
           className="rounded-xl border border-[#2D8A5F]/50 bg-[#1D6A47]/30 px-4 py-3 text-sm text-[#E8F5EE]"
           role="status"
         >
-          Thank you — we&apos;ve received your quote request. We&apos;ll be in touch within 24
-          hours.
+          Thank you — we&apos;ve received your quote request. We&apos;ll be in
+          touch within 24 hours.
         </p>
       )}
       {submitState === "error" && serverMessage && (
-        <p className="rounded-xl border border-red-500/40 bg-red-950/40 px-4 py-3 text-sm text-red-100" role="alert">
+        <p
+          className="rounded-xl border border-red-500/40 bg-red-950/40 px-4 py-3 text-sm text-red-100"
+          role="alert"
+        >
           {serverMessage}
         </p>
       )}

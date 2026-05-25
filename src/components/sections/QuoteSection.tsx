@@ -18,7 +18,6 @@ export function QuoteSection() {
     offset: ["start end", "end start"],
   });
   const y = useTransform(scrollYProgress, [0, 1], reduce ? [0, 0] : [48, -48]);
-  const rotate = useTransform(scrollYProgress, [0, 1], reduce ? [0, 0] : [1.5, -1.5]);
 
   return (
     <MotionSection
@@ -31,12 +30,12 @@ export function QuoteSection() {
             Get your free quote
           </h2>
           <p className="mt-4 text-[#666666]">
-            Tell us what you need — we&apos;ll review your details and call you within 24 hours
-            with a no-obligation quote.
+            Tell us what you need — we&apos;ll review your details and call you
+            within 24 hours with a no-obligation quote.
           </p>
         </div>
         <motion.div
-          style={{ y, rotate }}
+          style={{ y }}
           className="mx-auto mt-12 max-w-2xl rounded-[2rem] border border-[#1D6A47]/15 bg-linear-to-br from-[#0D3D24]/95 to-[#1D6A47]/90 p-6 shadow-[0_30px_80px_rgba(13,61,36,0.35)] backdrop-blur-2xl sm:p-10"
         >
           <QuoteRequestForm />

@@ -1,80 +1,184 @@
-import { Clock, Mail, MapPin, Phone } from "lucide-react";
+import type { ComponentType, ReactNode } from "react";
+import { Clock, Mail, MapPin, Navigation, Phone } from "lucide-react";
 import { siteConfig } from "@/lib/constants/site";
 import { MotionSection } from "@/components/animations/MotionSection";
-import { Card, CardContent } from "@/components/ui/card";
+import { cn } from "@/lib/utils/cn";
+
+const phoneHref = `tel:${siteConfig.phone.replace(/\s/g, "")}`;
+const [hoursWeekdays, hoursSunday] = siteConfig.openingHours.split(" · ");
+
+const quickActions = [
+  {
+    label: "Call us",
+    short: "Call",
+    href: phoneHref,
+    icon: Phone,
+    primary: true,
+    external: false,
+  },
+  {
+    label: "Email us",
+    short: "Email",
+    href: `mailto:${siteConfig.email}`,
+    icon: Mail,
+    primary: false,
+    external: false,
+  },
+  {
+    label: "Directions",
+    short: "Map",
+    href: siteConfig.maps.search,
+    icon: Navigation,
+    primary: false,
+    external: true,
+  },
+];
+
+type InfoCardProps = {
+  icon: ComponentType<{ className?: string }>;
+  title: string;
+  children: ReactNode;
+  className?: string;
+};
+
+function InfoCard({ icon: Icon, title, children, className }: InfoCardProps) {
+  return (
+    <article
+      className={cn(
+        "rounded-2xl border border-white/12 bg-[#FAFAF8]/95 p-5 shadow-lg shadow-black/15",
+        "sm:rounded-3xl sm:p-6",
+        className,
+      )}
+    >
+      <div className="mb-4 flex items-center gap-3">
+        <span className="flex size-10 items-center justify-center rounded-xl bg-[#1D6A47]/10 text-[#1D6A47]">
+          <Icon className="size-5" aria-hidden />
+        </span>
+        <h3 className="font-serif text-lg font-semibold text-[#0D3D24]">{title}</h3>
+      </div>
+      <div className="text-sm leading-relaxed text-[#444444]">{children}</div>
+    </article>
+  );
+}
 
 export function ContactSection() {
   return (
     <MotionSection
       id="contact"
-      className="scroll-mt-24 bg-linear-to-b from-[#0D3D24] to-[#1D6A47] py-20 md:py-28"
+      className="scroll-mt-24 bg-linear-to-b from-[#0D3D24] via-[#1D6A47] to-[#0D3D24] py-16 sm:py-20 md:py-28"
     >
       <div className="mx-auto max-w-6xl px-4 sm:px-6">
-        <h2 className="text-center font-serif text-3xl font-bold text-[#FAFAF8] sm:text-4xl">
-          Contact us
-        </h2>
-        <p className="mx-auto mt-4 max-w-xl text-center text-white/70">
-          Reach our team for bookings, questions, or ECO scheme advice.
-        </p>
-        <div className="mt-12 grid gap-6 lg:grid-cols-2">
-          <div className="grid gap-4 sm:grid-cols-2">
-            <Card className="border-white/15 bg-white/7">
-              <CardContent className="flex flex-col gap-3 pt-6">
-                <Phone className="size-5 text-[#C8882A]" aria-hidden />
-                <p className="text-xs font-semibold uppercase tracking-wide text-white/50">Phone</p>
+        <div className="mx-auto max-w-2xl text-center">
+          <h2 className="font-serif text-3xl font-bold text-[#FAFAF8] sm:text-4xl">
+            Contact us
+          </h2>
+          <p className="mt-4 text-base leading-relaxed text-white/70">
+            Tap to call, email, or get directions. Our Romford office is easy to find.
+          </p>
+        </div>
+
+        {/* Quick actions — thumb-friendly on mobile */}
+        <ul className="mt-8 grid grid-cols-3 gap-2 sm:mt-10 sm:gap-3">
+          {quickActions.map((action) => {
+            const Icon = action.icon;
+            return (
+              <li key={action.label}>
                 <a
-                  href={`tel:${siteConfig.phone.replace(/\s/g, "")}`}
-                  className="font-medium text-[#FAFAF8] hover:text-[#C8882A]"
+                  href={action.href}
+                  {...(action.external
+                    ? { target: "_blank", rel: "noopener noreferrer" }
+                    : {})}
+                  className={cn(
+                    "flex min-h-22 flex-col items-center justify-center gap-2 rounded-2xl px-2 py-4 text-center transition",
+                    "active:scale-[0.98] sm:min-h-25 sm:rounded-3xl sm:px-4",
+                    action.primary
+                      ? "bg-[#C8882A] text-[#1A1A1A] shadow-lg shadow-black/25 hover:bg-[#d6983f]"
+                      : "border border-white/15 bg-white/10 text-[#FAFAF8] hover:bg-white/15",
+                  )}
                 >
-                  {siteConfig.phone}
+                  <Icon className="size-6 shrink-0 sm:size-7" aria-hidden />
+                  <span className="text-[0.6875rem] font-bold uppercase tracking-wide sm:text-xs">
+                    <span className="sm:hidden">{action.short}</span>
+                    <span className="hidden sm:inline">{action.label}</span>
+                  </span>
                 </a>
-              </CardContent>
-            </Card>
-            <Card className="border-white/15 bg-white/7">
-              <CardContent className="flex flex-col gap-3 pt-6">
-                <Mail className="size-5 text-[#C8882A]" aria-hidden />
-                <p className="text-xs font-semibold uppercase tracking-wide text-white/50">Email</p>
-                <a
-                  href={`mailto:${siteConfig.email}`}
-                  className="break-all font-medium text-[#FAFAF8] hover:text-[#C8882A]"
-                >
-                  {siteConfig.email}
-                </a>
-              </CardContent>
-            </Card>
-            <Card className="border-white/15 bg-white/7">
-              <CardContent className="flex flex-col gap-3 pt-6">
-                <MapPin className="size-5 text-[#C8882A]" aria-hidden />
-                <p className="text-xs font-semibold uppercase tracking-wide text-white/50">Area</p>
-                <p className="font-medium text-[#FAFAF8]">{siteConfig.area}</p>
-                <p className="text-sm text-white/60">{siteConfig.addressLine}</p>
-              </CardContent>
-            </Card>
-            <Card className="border-white/15 bg-white/7">
-              <CardContent className="flex flex-col gap-3 pt-6">
-                <Clock className="size-5 text-[#C8882A]" aria-hidden />
-                <p className="text-xs font-semibold uppercase tracking-wide text-white/50">
-                  Opening hours
+              </li>
+            );
+          })}
+        </ul>
+
+        <div className="mt-6 grid gap-5 md:mt-10 md:grid-cols-2 md:gap-6 lg:gap-8">
+          {/* Details — first on mobile for readability, left on desktop */}
+          <div className="flex flex-col gap-5 md:order-1">
+            <InfoCard icon={MapPin} title="Visit our office">
+              <address className="not-italic">
+                <p className="font-semibold text-[#0D3D24]">{siteConfig.address.line1}</p>
+                <p className="mt-2">
+                  {siteConfig.address.line2}
+                  <br />
+                  {siteConfig.address.locality}, {siteConfig.address.region}
+                  <br />
+                  <span className="font-medium text-[#1D6A47]">{siteConfig.address.postcode}</span>
                 </p>
-                <p className="font-medium text-[#FAFAF8]">{siteConfig.openingHours}</p>
-              </CardContent>
-            </Card>
+              </address>
+            </InfoCard>
+
+            <div className="grid gap-5 sm:grid-cols-2 md:grid-cols-1">
+              <InfoCard icon={Clock} title="Opening hours">
+                <p>{hoursWeekdays}</p>
+                <p className="mt-1">{hoursSunday}</p>
+              </InfoCard>
+
+              <InfoCard icon={Phone} title="Phone & email">
+                <p>
+                  <a
+                    href={phoneHref}
+                    className="font-semibold text-[#1D6A47] underline-offset-2 hover:underline"
+                  >
+                    {siteConfig.phone}
+                  </a>
+                </p>
+                <p className="mt-3 break-all">
+                  <a
+                    href={`mailto:${siteConfig.email}`}
+                    className="font-semibold text-[#1D6A47] underline-offset-2 hover:underline"
+                  >
+                    {siteConfig.email}
+                  </a>
+                </p>
+              </InfoCard>
+            </div>
           </div>
-          <Card className="flex min-h-[280px] flex-col items-center justify-center border-dashed border-white/20 bg-white/4 p-8 text-center">
-            <MapPin className="mb-4 size-10 text-[#C8882A]/80" aria-hidden />
-            <p className="font-serif text-lg font-semibold text-[#FAFAF8]">Map location</p>
-            <p className="mt-2 max-w-xs text-sm text-white/60">
-              Google Maps embed placeholder — replace with your business Map embed or link.
-            </p>
-            <a
-              href="https://maps.google.com/?q=East+London+UK"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="mt-6 text-sm font-semibold text-[#C8882A] underline-offset-4 hover:underline"
+
+          {/* Map */}
+          <div className="flex flex-col md:order-2">
+            <div className="mb-3 flex items-center justify-between gap-2 px-0.5">
+              <p className="text-sm font-medium text-white/80">Office location</p>
+              <a
+                href={siteConfig.maps.search}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-sm font-semibold text-[#C8882A] underline-offset-2 hover:underline"
+              >
+                Open in Maps
+              </a>
+            </div>
+            <div
+              className={cn(
+                "overflow-hidden rounded-2xl border border-white/15 shadow-xl shadow-black/25",
+                "h-[220px] min-h-0 sm:h-[280px] md:h-full md:min-h-[420px] md:rounded-3xl",
+              )}
             >
-              Open East London in Google Maps
-            </a>
-          </Card>
+              <iframe
+                title={`${siteConfig.name} location — ${siteConfig.address.full}`}
+                src={siteConfig.maps.embed}
+                className="size-full border-0"
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+                allowFullScreen
+              />
+            </div>
+          </div>
         </div>
       </div>
     </MotionSection>

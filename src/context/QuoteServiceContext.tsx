@@ -9,6 +9,7 @@ import {
   type ReactNode,
 } from "react";
 import type { ServiceFormValue } from "@/lib/constants/services";
+import { scrollToSection } from "@/lib/utils/scroll";
 
 type QuoteServiceContextValue = {
   presetService: ServiceFormValue | null;
@@ -26,8 +27,7 @@ export function QuoteServiceProvider({ children }: { children: ReactNode }) {
   );
 
   const scrollToQuote = useCallback(() => {
-    const el = document.getElementById("quote");
-    el?.scrollIntoView({ behavior: "smooth", block: "start" });
+    scrollToSection("quote");
   }, []);
 
   const value = useMemo(

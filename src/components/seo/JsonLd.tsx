@@ -9,9 +9,22 @@ const schema = {
   url: "https://homeproservices.co.uk",
   telephone: siteConfig.phone,
   email: siteConfig.email,
+  address: {
+    "@type": "PostalAddress",
+    streetAddress: `${siteConfig.address.line1}, ${siteConfig.address.line2}`,
+    addressLocality: siteConfig.address.locality,
+    addressRegion: siteConfig.address.region,
+    postalCode: siteConfig.address.postcode,
+    addressCountry: "GB",
+  },
+  geo: {
+    "@type": "GeoCoordinates",
+    latitude: siteConfig.coordinates.lat,
+    longitude: siteConfig.coordinates.lng,
+  },
   areaServed: {
     "@type": "Place",
-    name: "East London",
+    name: "East London & Essex",
     addressRegion: "London",
     addressCountry: "GB",
   },
